@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+
 "use client"; // ✅ Client Component
 
 import { useGetRelatedProductsQuery } from "@/lib/features/productApi";

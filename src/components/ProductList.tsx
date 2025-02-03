@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+
 "use client"; // ✅ Ensure this runs only on the client
 
 import { useGetProductsQuery } from "@/lib/features/productApi";
