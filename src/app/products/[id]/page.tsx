@@ -3,6 +3,16 @@ import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton";
 import RelatedProducts from "@/components/RelatedProducts";
 
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  rating: number;
+  thumbnail: string;
+  category: string;
+}
+
 interface PageProps {
   params: {
     id: string;
@@ -40,6 +50,26 @@ const ProductDetailPage = async ({ params }: PageProps) => {
     </main>
   );
 };
+
+export async function generateStaticParams() {
+  try {
+    const response = await fetch('https://dummyjson.com/products');
+    const data = await response.json();
+    const allProducts = data.products; // Ensure we access the correct array
+
+    if (!Array.isArray(allProducts)) {
+      console.error("Expected 'products' to be an array");
+      return [];
+    }
+
+    return allProducts.map((product: Product) => ({
+      id: product.id.toString(),
+    }));
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    return [];
+  }
+}
 
 export default ProductDetailPage;
 
