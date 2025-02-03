@@ -19,8 +19,11 @@ interface PageProps {
   };
 }
 
+// Refactor to handle asynchronous behavior
 const ProductDetailPage = async ({ params }: PageProps) => {
-  const product = await fetchProductById(params.id);
+  const { id } = await params;
+
+  const product = await fetchProductById(id);
 
   if (!product) return <p className="text-center text-red-500">Product not found</p>;
 
