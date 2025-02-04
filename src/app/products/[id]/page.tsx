@@ -13,30 +13,31 @@ interface Product {
   category: string;
 }
 
-// Update the PageProps to allow the params to be a Promise
+// Ensure params is a plain object, not a Promise
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 const ProductDetailPage = async ({ params }: PageProps) => {
-  // Await params here to ensure it resolves to the actual value
-  const { id } = await params;
-
+  const { id } = params; // Ensure id is accessed correctly
   const product = await fetchProductById(id);
 
   if (!product || Object.keys(product).length === 0) {
     return <p className="text-center text-red-500">Product not found</p>;
   }
-  
-
-  if (!product) return <p className="text-center text-red-500">Product not found</p>;
 
   return (
     <main className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <div>
-          <Image src={product.thumbnail} alt={product.title} width={500} height={500} className="rounded-md" />
+          <Image
+            src={product.thumbnail}
+            alt={product.title}
+            width={500}
+            height={500}
+            className="rounded-md"
+          />
         </div>
 
         {/* Product Details */}
@@ -61,7 +62,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
 // Generate static params for product pages
 export async function generateStaticParams() {
   try {
-    const response = await fetch('https://dummyjson.com/products');
+    const response = await fetch("https://dummyjson.com/products");
     const data = await response.json();
     const allProducts = data.products;
 
@@ -80,6 +81,7 @@ export async function generateStaticParams() {
 }
 
 export default ProductDetailPage;
+
 
 
 // import { fetchProductById } from "@/lib/features/productApi";
