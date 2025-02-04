@@ -47,7 +47,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
           <p className="text-yellow-500">⭐ {product.rating}</p>
 
           {/* Add to Cart Button */}
-          <AddToCartButton product={product} />
+          <AddToCartButton />
         </div>
       </div>
 
