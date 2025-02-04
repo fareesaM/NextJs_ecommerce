@@ -37,7 +37,14 @@ export const productsApi = createApi({
 
 export const { useGetProductsQuery, useGetProductByIdQuery, useGetRelatedProductsQuery } = productsApi;
 
-export const fetchProductById = async (id) => {
-  const response = await baseQuery(`/products/${id}`, {});
-  return response.data;
-};
+export const fetchProductById = async (id: string | number) => {
+    const response = await fetch(`https://dummyjson.com/products/${id}`);
+    
+    if (!response.ok) {
+      throw new Error("Failed to fetch product");
+    }
+  
+    return response.json(); // Ensure the response is correctly converted to JSON
+  };
+  
+  

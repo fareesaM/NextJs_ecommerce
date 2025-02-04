@@ -24,6 +24,11 @@ const ProductDetailPage = async ({ params }: PageProps) => {
 
   const product = await fetchProductById(id);
 
+  if (!product || Object.keys(product).length === 0) {
+    return <p className="text-center text-red-500">Product not found</p>;
+  }
+  
+
   if (!product) return <p className="text-center text-red-500">Product not found</p>;
 
   return (

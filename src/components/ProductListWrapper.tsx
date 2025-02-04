@@ -13,7 +13,7 @@ export default function ProductListWrapper() {
 
   return (
     <div>
-      <Filters category={category} sort={sort} />
+      <Filters  />
       <ProductList page={page} category={category} sort={sort} />
       <Pagination page={page} category={category} sort={sort} />
     </div>
