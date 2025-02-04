@@ -6,9 +6,7 @@ import { addToCart } from "@/lib/features/cartSlice";
 
 import { Product } from "./types";
 
-interface AddToCartButtonProps {
-  product: Product;
-}
+
 
 export default function AddToCartButton({ product }: { product: Product }) {
   const dispatch = useDispatch();
