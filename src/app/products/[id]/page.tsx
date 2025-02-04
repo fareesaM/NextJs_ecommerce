@@ -2,9 +2,11 @@ import { fetchProductById } from "@/lib/features/productApi";
 import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton";
 import RelatedProducts from "@/components/RelatedProducts";
+import { Suspense } from "react";
 
+// Define Product type
 interface Product {
-  id: string;
+  id: number;
   title: string;
   description: string;
   price: number;
@@ -13,30 +15,37 @@ interface Product {
   category: string;
 }
 
-// Update the PageProps to allow the params to be a Promise
+// Fix PageProps (params should be a direct object)
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string }; // ✅ No promise here
 }
 
+// Ensure async data fetching
 const ProductDetailPage = async ({ params }: PageProps) => {
-  // Await params here to ensure it resolves to the actual value
-  const { id } = await params;
+  const { id } = params; // ✅ No need to await params
 
-  const product = await fetchProductById(id);
+  if (!id) {
+    return <p className="text-center text-red-500">Invalid product ID</p>;
+  }
 
-  if (!product || Object.keys(product).length === 0) {
+  const product: Product | null = await fetchProductById(id);
+
+  if (!product) {
     return <p className="text-center text-red-500">Product not found</p>;
   }
-  
-
-  if (!product) return <p className="text-center text-red-500">Product not found</p>;
 
   return (
     <main className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <div>
-          <Image src={product.thumbnail} alt={product.title} width={500} height={500} className="rounded-md" />
+          <Image
+            src={product.thumbnail}
+            alt={product.title}
+            width={500}
+            height={500}
+            className="rounded-md"
+          />
         </div>
 
         {/* Product Details */}
@@ -51,35 +60,17 @@ const ProductDetailPage = async ({ params }: PageProps) => {
         </div>
       </div>
 
-      {/* Related Products */}
-      <h2 className="text-2xl font-semibold mt-8">Related Products</h2>
-      <RelatedProducts category={product.category} excludeId={product.id} />
+      {/* Related Products with Suspense to avoid hydration errors */}
+      <Suspense fallback={<p>Loading related products...</p>}>
+        <h2 className="text-2xl font-semibold mt-8">Related Products</h2>
+        <RelatedProducts category={product.category} excludeId={product.id} />
+      </Suspense>
     </main>
   );
 };
 
-// Generate static params for product pages
-export async function generateStaticParams() {
-  try {
-    const response = await fetch('https://dummyjson.com/products');
-    const data = await response.json();
-    const allProducts = data.products;
-
-    if (!Array.isArray(allProducts)) {
-      console.error("Expected 'products' to be an array");
-      return [];
-    }
-
-    return allProducts.map((product: Product) => ({
-      id: product.id.toString(),
-    }));
-  } catch (error) {
-    console.error("Failed to fetch products:", error);
-    return [];
-  }
-}
-
 export default ProductDetailPage;
+
 
 
 // import { fetchProductById } from "@/lib/features/productApi";
