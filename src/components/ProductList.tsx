@@ -4,6 +4,14 @@ import { useGetProductsQuery } from "@/lib/features/productApi";
 import Image from "next/image";
 import Link from "next/link";
 
+interface Product {
+    id: number;
+    title: string;
+    price: number;
+    rating: number;
+    thumbnail: string;
+  }
+
 export default function ProductList({ page, category, sort }: { page: number; category: string; sort: string }) {
   const { data, error, isLoading } = useGetProductsQuery({ page, category, sort });
 
@@ -12,7 +20,7 @@ export default function ProductList({ page, category, sort }: { page: number; ca
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {data?.products.map((product: any) => (
+      {data?.products.map((product: Product) => (
         <div key={product.id} className="border rounded-lg p-4 shadow">
           {/* ✅ Ensure Link uses correct Next.js syntax */}
           <Link href={`/products/${product.id}`} className="block">
