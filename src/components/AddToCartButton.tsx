@@ -4,7 +4,13 @@
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/features/cartSlice";
 
-export default function AddToCartButton({ product }: { product: any }) {
+import { Product } from "./types";
+
+interface AddToCartButtonProps {
+  product: Product;
+}
+
+export default function AddToCartButton({ product }: { product: Product }) {
   const dispatch = useDispatch();
 
   return (
