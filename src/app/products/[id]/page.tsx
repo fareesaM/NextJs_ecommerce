@@ -4,8 +4,8 @@ import AddToCartButton from "@/components/AddToCartButton";
 import RelatedProducts from "@/components/RelatedProducts";
 import { Suspense } from "react";
 
-// Define the Params type correctly
-type Params = { id: string };
+// Define the tParams type correctly
+type tParams = Promise<{ slug: string[] }>;
 
 // Define Product type
 interface Product {
@@ -20,16 +20,19 @@ interface Product {
 
 // Fix PageProps (params should be an object, not a Promise)
 interface PageProps {
-  params: Params;
+  params: tParams;
 }
 
 // Ensure async data fetching
 const ProductDetailPage = async ({ params }: PageProps) => {
-  if (!params || !params.id) {
+  const { slug } = await params;
+  const productID = slug[1];
+
+  if (!productID) {
     return <p className="text-center text-red-500">Invalid product ID</p>;
   }
 
-  const product: Product | null = await fetchProductById(params.id);
+  const product: Product | null = await fetchProductById(productID);
 
   if (!product) {
     return <p className="text-center text-red-500">Product not found</p>;
@@ -57,7 +60,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
           <p className="text-yellow-500">⭐ {product.rating}</p>
 
           {/* Add to Cart Button */}
-          <AddToCartButton product={product} />
+          <AddToCartButton  />
         </div>
       </div>
 
@@ -71,6 +74,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
 };
 
 export default ProductDetailPage;
+
 
 
 // import { fetchProductById } from "@/lib/features/productApi";
