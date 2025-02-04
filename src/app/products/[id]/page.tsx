@@ -3,13 +3,11 @@ import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton";
 import RelatedProducts from "@/components/RelatedProducts";
 import { Suspense } from "react";
-type Params = Promise<{ rcdId: string }>
 
-export async function GPSFix(props: { params: Params }) {
-  const params = await props.params;
-  const rcdId = params.rcdId;
-}
-// ✅ Define Product type
+// Define the Params type correctly
+type Params = { id: string };
+
+// Define Product type
 interface Product {
   id: number;
   title: string;
@@ -20,12 +18,12 @@ interface Product {
   category: string;
 }
 
-// ✅ Fix PageProps (params should be an object, not a Promise)
+// Fix PageProps (params should be an object, not a Promise)
 interface PageProps {
-  params: { id: string };
+  params: Params;
 }
 
-// ✅ Ensure async data fetching
+// Ensure async data fetching
 const ProductDetailPage = async ({ params }: PageProps) => {
   if (!params || !params.id) {
     return <p className="text-center text-red-500">Invalid product ID</p>;
@@ -59,7 +57,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
           <p className="text-yellow-500">⭐ {product.rating}</p>
 
           {/* Add to Cart Button */}
-          <AddToCartButton />
+          <AddToCartButton product={product} />
         </div>
       </div>
 
