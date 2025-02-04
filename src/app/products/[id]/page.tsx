@@ -13,16 +13,14 @@ interface Product {
   category: string;
 }
 
+// Update the PageProps to allow the params to be a Promise
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
-// Refactor to handle asynchronous behavior
 const ProductDetailPage = async ({ params }: PageProps) => {
-  // Await params to ensure it's fully resolved
-  const { id } = await params;  // Await here
+  // Await params here to ensure it resolves to the actual value
+  const { id } = await params;
 
   const product = await fetchProductById(id);
 
