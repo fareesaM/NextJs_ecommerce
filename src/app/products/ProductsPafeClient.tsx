@@ -14,7 +14,7 @@ export default function ProductsPageClient() {
 
   return (
     <main className="container mx-auto p-4">
-      <Filters selectedCategory={category} selectedSort={sort} />
+      <Filters   />
       <ProductList category={category} sort={sort} page={Number(page)} />
     </main>
   );
