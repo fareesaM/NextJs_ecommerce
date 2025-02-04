@@ -3,7 +3,12 @@ import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton";
 import RelatedProducts from "@/components/RelatedProducts";
 import { Suspense } from "react";
+type Params = Promise<{ rcdId: string }>
 
+export async function GPSFix(props: { params: Params }) {
+  const params = await props.params;
+  const rcdId = params.rcdId;
+}
 // ✅ Define Product type
 interface Product {
   id: number;
