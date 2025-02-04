@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-
-"use client"; // ✅ Ensure this runs only on the client
+"use client"; // ✅ Must be a Client Component
 
 import { useGetProductsQuery } from "@/lib/features/productApi";
 import Image from "next/image";
@@ -16,7 +14,8 @@ export default function ProductList({ page, category, sort }: { page: number; ca
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {data?.products.map((product: any) => (
         <div key={product.id} className="border rounded-lg p-4 shadow">
-          <Link href={`/products/${product.id}`}>
+          {/* ✅ Ensure Link uses correct Next.js syntax */}
+          <Link href={`/products/${product.id}`} className="block">
             <Image src={product.thumbnail} alt={product.title} width={200} height={200} className="rounded-md" />
             <h2 className="text-lg font-semibold">{product.title}</h2>
             <p className="text-gray-600">${product.price}</p>
