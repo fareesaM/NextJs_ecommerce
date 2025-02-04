@@ -3,6 +3,7 @@ import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton";
 import RelatedProducts from "@/components/RelatedProducts";
 import { Suspense } from "react";
+import { useSearchParams } from 'next/navigation';
 
 // Define the tParams type correctly
 type tParams = Promise<{ slug: string[] }>;
@@ -73,8 +74,16 @@ const ProductDetailPage = async ({ params }: PageProps) => {
   );
 };
 
-export default ProductDetailPage;
+// Wrap the entire page in a Suspense boundary
+export default function ProductDetailWrapper(props: { params: tParams }) {
+  const searchParams = useSearchParams();
 
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <ProductDetailPage params={props.params} />
+    </Suspense>
+  );
+}
 
 
 // import { fetchProductById } from "@/lib/features/productApi";
