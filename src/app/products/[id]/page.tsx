@@ -4,7 +4,7 @@ import AddToCartButton from "@/components/AddToCartButton";
 import RelatedProducts from "@/components/RelatedProducts";
 import { Suspense } from "react";
 
-// Define Product type
+// ✅ Define Product type
 interface Product {
   id: number;
   title: string;
@@ -15,20 +15,18 @@ interface Product {
   category: string;
 }
 
-// Fix PageProps (params should be a direct object)
+// ✅ Fix PageProps (params should be an object, not a Promise)
 interface PageProps {
-  params: { id: string }; // ✅ No promise here
+  params: { id: string };
 }
 
-// Ensure async data fetching
+// ✅ Ensure async data fetching
 const ProductDetailPage = async ({ params }: PageProps) => {
-  const { id } = params; // ✅ No need to await params
-
-  if (!id) {
+  if (!params || !params.id) {
     return <p className="text-center text-red-500">Invalid product ID</p>;
   }
 
-  const product: Product | null = await fetchProductById(id);
+  const product: Product | null = await fetchProductById(params.id);
 
   if (!product) {
     return <p className="text-center text-red-500">Product not found</p>;
@@ -70,7 +68,6 @@ const ProductDetailPage = async ({ params }: PageProps) => {
 };
 
 export default ProductDetailPage;
-
 
 
 // import { fetchProductById } from "@/lib/features/productApi";
